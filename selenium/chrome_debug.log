@@ -1,0 +1,5 @@
+[23752:22012:1101/174812.047:INFO:CONSOLE(0)] "[DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o", source: https://www.instagram.com/ (0)
+[23752:22012:1101/174815.323:INFO:CONSOLE(0)] "[DOM] Input elements should have autocomplete attributes (suggested: "username"): (More info: https://goo.gl/9p2vKq) %o", source: https://www.instagram.com/accounts/emailsignup/ (0)
+[23752:22012:1101/174900.363:INFO:CONSOLE(0)] "[DOM] Input elements should have autocomplete attributes (suggested: "username"): (More info: https://goo.gl/9p2vKq) %o", source: https://www.instagram.com/accounts/emailsignup/ (0)
+[23752:22012:1101/174917.817:INFO:CONSOLE(0)] "[DOM] Input elements should have autocomplete attributes (suggested: "username"): (More info: https://goo.gl/9p2vKq) %o", source: https://www.instagram.com/accounts/emailsignup/ (0)
+[23752:22012:1101/174919.101:WARNING:pref_notifier_impl.cc(40)] Pref observer for media_router.cast_allow_all_ips found at shutdown.

@@ -1,0 +1,16 @@
+[1101/154437.633:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
+[1101/154437.638:ERROR:exception_snapshot_win.cc(99)] thread ID 15880 not found in process
+[1101/154437.669:ERROR:process_reader_win.cc(151)] SuspendThread: Accesso negato. (0x5)
+[1101/154437.670:ERROR:process_reader_win.cc(151)] SuspendThread: Accesso negato. (0x5)
+[1101/154437.670:ERROR:process_reader_win.cc(151)] SuspendThread: Accesso negato. (0x5)
+[1101/154437.671:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
+[1101/154437.671:ERROR:exception_snapshot_win.cc(99)] thread ID 20096 not found in process
+[1101/154617.102:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
+[1101/154617.103:ERROR:exception_snapshot_win.cc(99)] thread ID 24540 not found in process
+[1101/154617.131:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
+[1101/154617.131:ERROR:exception_snapshot_win.cc(99)] thread ID 25116 not found in process
+[1101/172449.119:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
+[1101/172449.123:ERROR:exception_snapshot_win.cc(99)] thread ID 24116 not found in process
+[1101/172449.154:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
+[1101/172449.154:ERROR:exception_snapshot_win.cc(99)] thread ID 26144 not found in process
+[1101/174352.106:ERROR:directory_reader_win.cc(43)] FindFirstFile: Impossibile trovare il percorso specificato. (0x3)
