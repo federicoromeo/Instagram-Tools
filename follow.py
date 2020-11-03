@@ -1,28 +1,8 @@
-import errno, os, getpass
+from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
-from time import sleep
 from datetime import datetime
-#import telepot
-
-#TOKEN = "1210505790:AAFOsOXEgtM_ArwkZOi3AFqWACQxgnKraig"
-#bot = telepot.Bot(TOKEN)
-#print("Bot ready...")
-#content_type, chat_type, chat_id = 0,0,0
-
-#def handle(msg):
-#    content_type, chat_type, chat_id = telepot.glance(msg)
-#    #print(content_type, chat_type, chat_id)
-#    bot.sendMessage(chat_id, "Enter your username and password separated by - : ")
-#    bot.sendMessage(chat_id, "You have 10 seconds, hurry up! Then just wait")
-#    bot.sendMessage(chat_id, "example:      user - psw")
-#    sleep(10)
-#    account = msg['text'].split("-")
-#    user = account[0].strip()
-#    password = account[1].strip()
-#    print(user)
-#    print(password)
-#    bot.sendMessage(chat_id, "Processing...")
-#    my_bot = InstaBot(user,password)
+import errno, os, getpass
+from time import sleep
 
 def dir_creation():
     now = datetime.now().strftime('%Y_%m_%d__%H_%M_%S')
@@ -32,88 +12,81 @@ def dir_creation():
         return mydir
     except OSError as e:
         if e.errno != errno.EEXIST:
-            raise  # This was not a "directory exist" error..
+            raise Exception
 
-def file_writing(list, path, filename):
-    with open(os.path.join(path, filename), 'w') as d:
-        d.write(str(len(list)))
-        d.write("\n")
+def file_writing(list, path, filename, string):
+    with open(os.path.join(path, filename), 'w') as f:
+        f.write("The number of account that " + string + str(len(list)))
+        f.write("\n")
         for el in list:
-            d.write(el + "\n")
+            f.write(el + "\n")
 
 class InstaBot:
 
     def __init__(self, username, psw):
         self.driver = webdriver.Chrome()
         self.username = username
-        self.psw = psw
+        self.password = password
         self.driver.get("https://instagram.com")
         sleep(2)
+        print("\nLogging into Instagram...")
         # login
-        self.driver.find_element_by_xpath("/html/body/div[2]/div/div/div/div[2]/button[1]")\
-            .click()
+        self.driver.find_element_by_xpath("/html/body/div[2]/div/div/div/div[2]/button[1]").click()
         # username
-        self.driver.find_element_by_xpath("//input[@name=\"username\"]")\
-            .send_keys(username)
+        self.driver.find_element_by_xpath("//input[@name=\"username\"]").send_keys(username)
         # password
-        self.driver.find_element_by_xpath("//input[@name=\"password\"]")\
-            .send_keys(psw)
+        self.driver.find_element_by_xpath("//input[@name=\"password\"]").send_keys(psw)
         #submit
-        self.driver.find_element_by_xpath('//button[@type="submit"]')\
-            .click()
+        self.driver.find_element_by_xpath('//button[@type="submit"]').click()
         sleep(4)
         try:
             # cookies not now
-            self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/div/button")\
-                .click()
+            self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/div/button").click()
             sleep(2)
-            # notifications not now
-            self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[1]")\
-                .click()
-            sleep(2)
-            self.get_unfollowers()
-        except Exception as e:
-            print(e)
-            #bot.sendMessage(chat_id, "You entered invalid details..")
+        except NoSuchElementException:  #wrong password
+            response = self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[2]/p').text
+            print(response)
+            return
+        # notifications not now
+        self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[1]").click()
+        sleep(2)
+        self.get_unfollowers()
+        sleep(1)
+        self.driver.close()
+        return
 
     def get_unfollowers(self):
-
         path = dir_creation()
-
         #my account
-        self.driver.find_element_by_xpath("/html/body/div[1]/section/nav/div[2]/div/div/div[3]/div/div[5]/span/img".format(self.username))\
-            .click()
+        self.driver.find_element_by_xpath("/html/body/div[1]/section/nav/div[2]/div/div/div[3]/div/div[5]/span/img".format(self.username)).click()
         # profile
-        self.driver.find_element_by_xpath("/html/body/div[1]/section/nav/div[2]/div/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/a[1]/div/div[2]/div/div/div/div".format(self.username))\
-            .click()
-        sleep(2)
-
+        self.driver.find_element_by_xpath("/html/body/div[1]/section/nav/div[2]/div/div/div[3]/div/div[5]/div[2]/div/div[2]/div[2]/a[1]/div/div[2]/div/div/div/div".format(self.username)).click()
         # following
-        self.driver.find_element_by_xpath("//a[contains(@href,'/following')]")\
-            .click()
-        following = self._get_names()
-        file_writing(following, path, "following.txt")
-        print("Done with the following")
-
+        sleep(3)
+        print("Scrolling Following accounts...")
+        self.driver.find_element_by_xpath("//a[contains(@href,'/following')]").click()
+        following = self.get_names()
+        file_writing(following, path, "following.txt", "you are following is: ")
+        print("Done with the Following")
         # followers
-        self.driver.find_element_by_xpath("//a[contains(@href,'/followers')]")\
-            .click()
-        followers = self._get_names()
-        file_writing(followers, path, "followers.txt")
-        print("Done with the followers")
-
+        sleep(1)
+        print("Scrolling Followers accounts...")
+        self.driver.find_element_by_xpath("//a[contains(@href,'/followers')]").click()
+        followers = self.get_names()
+        file_writing(followers, path, "followers.txt", "are following you is: ")
+        print("Done with the Followers")
         # not_following_back
-        not_following_back = [user for user in following if user not in followers]
-        file_writing(not_following_back, path, "not_following_back.txt")
-        print("Done with the not following back")
+        sleep(1)
+        print("Scrolling Not Following Back accounts...")
+        not_following_back = [user  for user in following  if user not in followers]
+        file_writing(not_following_back, path, "not_following_back.txt", "are not following you back are: ")
+        print("Done with the Not Following Back")
+        return
 
-        #bot.sendMessage(chat_id, "UNFOLLOWERS:")import stdiomask
-        #for el in not_following_back:
-        #bot.sendMessage(chat_id, el)
-
-    def _get_names(self):
+    def get_names(self):
         sleep(2)
-        scroll_box = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]")
+        #scroll_box = self.driver.find_element_by_class_name("isgrP")        #scroll_box = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]")
+        scroll_box = self.driver.find_element_by_xpath('//div[@class="isgrP"]')
         last_ht, ht = 0, 1
         while last_ht != ht:
             last_ht = ht
@@ -123,21 +96,15 @@ class InstaBot:
                 return arguments[0].scrollHeight;
                 """, scroll_box)
         links = scroll_box.find_elements_by_tag_name('a')
-        names = [name.text for name in links if name.text != '']
+        names = [name.text  for name in links  if name.text != '']
+        sleep(2)
         # close button
-        self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[1]/div/div[2]/button")\
-            .click()
+        self.driver.find_element_by_css_selector('body > div.RnEpo.Yx5HN > div > div > div:nth-child(1) > div > div:nth-child(3) > button').click()
         return names
 
 
-user_name = "federicoromeo98" #input("Enter your username : ")
-password = "mmmmmmmmmmeo98"   #input("Enter your password : ")
-#password = getpass.getpass('Password :: ')
+username = input("Username :: ")
+password = getpass.getpass("Password :: ")
+#password = input("Enter your password : ")
 
-my_bot = InstaBot(user_name,password)
-
-
-#bot.message_loop(handle)
-
-#while 1:
-#    sleep(1)
+my_bot = InstaBot(username,password)
